@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.lsm.todo_app.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_add_task"
+        android:name="com.lsm.todo_app.ui.add_task.AddTaskFragment"
+        android:label="@string/title_add_task"
+        tools:layout="@layout/fragment_add_task" />
 </navigation>

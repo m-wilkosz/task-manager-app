@@ -2,7 +2,7 @@
     <string name="app_name">TODO_app</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_add_task">Add task</string>
     <string name="taskTitleInputHint">Enter task\'s title</string>
     <string name="addButtonText">Add</string>
     <string name="choosePriorityText">Choose priority:</string>

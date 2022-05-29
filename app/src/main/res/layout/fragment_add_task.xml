@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.notifications.NotificationsFragment"
+    tools:context=".ui.add_task.AddTaskFragment"
     android:background="@color/red1">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -50,9 +50,10 @@
         android:id="@+id/prioritySpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPriority"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFieldTitle"
+        app:layout_constraintStart_toEndOf="@+id/textViewPriority"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
         android:spinnerMode="dropdown"/>
 
     <Button
@@ -68,9 +69,12 @@
 
     <ImageView
         android:id="@+id/imageBG"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/bg_red"
+        android:adjustViewBounds="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="0dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
