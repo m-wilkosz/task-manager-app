@@ -10,7 +10,14 @@
     <string name="add_task_button_description">Add task button</string>
     <string name="chooseNotificationText">Notification:</string>
     <string name="radio_button_once_text">Once</string>
-    <string name="radio_button_frequently_text">Frequently</string>
+    <string name="repeatable_switch_text">Repeatable</string>
+    <string name="select_date_hint">Select date</string>
+    <string name="select_time_hint">Select time</string>
+    <string name="radio_button_daily_text">Daily</string>
+    <string name="radio_button_weekly_text">Weekly</string>
+    <string name="radio_button_monthly_text">Monthly</string>
+    <string name="radio_button_yearly_text">Yearly</string>
+    <string name="choose_frequency_text">Frequency:</string>
     <string-array name="priorities">
         <item>High</item>
         <item>Medium</item>
