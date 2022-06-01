@@ -8,11 +8,16 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.lsm.todo_app.R
 import com.lsm.todo_app.databinding.FragmentAddTaskBinding
+import com.lsm.todo_app.ui.BaseFragment
+import com.lsm.todo_app.ui.notifyObserver
+import java.util.*
 
-class AddTaskFragment : Fragment() {
+class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.java) {
 
     private var _binding: FragmentAddTaskBinding? = null
 
@@ -71,5 +76,32 @@ class AddTaskFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = this.viewModel
+        binding.lifecycleOwner = this
+
+        observeShowDatePickerRequest()
+    }
+
+    private fun observeShowDatePickerRequest() {
+        viewModel.showDatePickerRequest.observe(this.viewLifecycleOwner) {
+            showDatePicker()
+        }
+    }
+
+    private fun showDatePicker() {
+        val title = resources.getString(R.string.select_date_hint)
+        val datePicker = MaterialDatePicker.Builder.datePicker().setTitleText(title).build()
+        datePicker.addOnPositiveButtonClickListener { value ->
+            viewModel.task.value?.let { task ->
+                task.date = Date(value)
+                viewModel.task.notifyObserver()
+            }
+        }
+
+        datePicker.show(this.parentFragmentManager, "DATE_PICKER_TAG")
     }
 }
