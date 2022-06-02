@@ -14,13 +14,16 @@ import java.util.*
 class AddTaskViewModel : BaseViewModel() {
 
     val showDatePickerRequest = BaseFragment.SingleLiveEvent<Date>()
+    val showTimePickerRequest = BaseFragment.SingleLiveEvent<Int>()
 
     private val _task = MutableLiveData<Task>()
     val task = _task
 
     override fun prepare(args: Bundle?) {
         super.prepare(args)
-        _task.value = Task(title = "", priority = "", category = "", date = Calendar.getInstance().time, time = LocalTime.now(), frequency = "")
+        val calendar: Calendar = Calendar.getInstance()
+        _task.value = Task(title = "", priority = "", category = "", date = calendar.time,
+            hour = calendar.get(Calendar.HOUR_OF_DAY), minute = calendar.get(Calendar.MINUTE), frequency = "")
     }
 
     fun saveAddTask() {
@@ -30,6 +33,13 @@ class AddTaskViewModel : BaseViewModel() {
     fun showDatePicker() {
         task.value?.let {
             showDatePickerRequest.postValue(it.date)
+        }
+    }
+
+    fun showTimePicker() {
+        task.value?.let {
+            showTimePickerRequest.postValue(it.hour)
+            showTimePickerRequest.postValue(it.minute)
         }
     }
 }

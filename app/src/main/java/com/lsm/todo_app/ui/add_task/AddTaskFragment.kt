@@ -11,10 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.lsm.todo_app.R
 import com.lsm.todo_app.databinding.FragmentAddTaskBinding
 import com.lsm.todo_app.ui.BaseFragment
 import com.lsm.todo_app.ui.notifyObserver
+import java.time.LocalTime
 import java.util.*
 
 class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.java) {
@@ -84,11 +87,18 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
         binding.lifecycleOwner = this
 
         observeShowDatePickerRequest()
+        observeShowTimePickerRequest()
     }
 
     private fun observeShowDatePickerRequest() {
         viewModel.showDatePickerRequest.observe(this.viewLifecycleOwner) {
             showDatePicker()
+        }
+    }
+
+    private fun observeShowTimePickerRequest() {
+        viewModel.showTimePickerRequest.observe(this.viewLifecycleOwner) {
+            showTimePicker()
         }
     }
 
@@ -103,5 +113,26 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
         }
 
         datePicker.show(this.parentFragmentManager, "DATE_PICKER_TAG")
+    }
+
+    private fun showTimePicker() {
+        val title = resources.getString(R.string.select_time_hint)
+        val timePicker = MaterialTimePicker
+            .Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(12)
+            .setMinute(0)
+            .setTitleText(title)
+            .build()
+
+        timePicker.addOnPositiveButtonClickListener {
+            viewModel.task.value?.let { task ->
+                task.hour = timePicker.hour
+                task.minute = timePicker.minute
+                viewModel.task.notifyObserver()
+            }
+        }
+
+        timePicker.show(this.parentFragmentManager, "TIME_PICKER_TAG")
     }
 }

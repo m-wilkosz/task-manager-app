@@ -8,6 +8,7 @@ data class Task (
     var priority: String = "",
     var category: String = "",
     var date: Date,
-    var time: LocalTime,
+    var hour: Int = 0,
+    var minute: Int = 0,
     var frequency: String = ""
 )

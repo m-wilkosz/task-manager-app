@@ -7,5 +7,6 @@
     <dimen name="margin_big">50dp</dimen>
     <dimen name="margin_veryBig">150dp</dimen>
     <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_small_minus">-8dp</dimen>
     <dimen name="textSize_h1">18sp</dimen>
 </resources>

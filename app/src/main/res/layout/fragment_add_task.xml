@@ -27,7 +27,7 @@
             app:boxStrokeWidth="@dimen/inputBoxStrokeWidth"
             android:textColorHint="@color/red3"
             app:hintTextColor="@color/red3"
-            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginEnd="@dimen/margin_medium"
             app:layout_constraintStart_toStartOf="parent"
@@ -129,6 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{() -> viewModel.showDatePicker()}"
+                android:drawablePadding="@dimen/margin_small_minus"
                 android:cursorVisible="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
@@ -150,14 +151,16 @@
             app:boxStrokeWidth="@dimen/inputBoxStrokeWidth"
             android:textColorHint="@color/red3"
             android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_big"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/margin_small"
+            app:layout_constraintStart_toEndOf="@id/outlinedTextFieldDate"
             app:layout_constraintTop_toBottomOf="@+id/textViewNotification"
             app:startIconDrawable="@drawable/ic_baseline_time_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.showTimePicker()}"
+                android:drawablePadding="@dimen/margin_small_minus"
                 android:cursorVisible="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
@@ -243,11 +246,11 @@
             android:id="@+id/addButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_big"
-            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginTop="@dimen/margin_medium"
             android:backgroundTint="@color/red3"
             android:text="@string/addButtonText"
             app:layout_constraintTop_toBottomOf="@id/radioGroupFrequency"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
