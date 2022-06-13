@@ -5,10 +5,9 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -17,10 +16,9 @@ import com.lsm.todo_app.R
 import com.lsm.todo_app.databinding.FragmentAddTaskBinding
 import com.lsm.todo_app.ui.BaseFragment
 import com.lsm.todo_app.ui.notifyObserver
-import java.time.LocalTime
 import java.util.*
 
-class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.java) {
+class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.java), AdapterView.OnItemSelectedListener {
 
     private var _binding: FragmentAddTaskBinding? = null
 
@@ -40,39 +38,30 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
         val root: View = binding.root
 
         val prioritySpinner: Spinner = root.findViewById(R.id.prioritySpinner)
+        prioritySpinner.onItemSelectedListener = this
         prioritySpinner.setGravity(Gravity.RIGHT)
-        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             requireContext(),
             R.array.priorities,
             R.layout.spinner_item
         ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
             prioritySpinner.adapter = adapter
             prioritySpinner.setSelection(0)
         }
 
         val categorySpinner: Spinner = root.findViewById(R.id.categorySpinner)
+        categorySpinner.onItemSelectedListener = this
         categorySpinner.setGravity(Gravity.RIGHT)
-        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             requireContext(),
             R.array.categories,
             R.layout.spinner_item
         ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
             categorySpinner.adapter = adapter
             categorySpinner.setSelection(0)
         }
-
-        /*val textView: TextView = binding.textAddTask
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }*/
         return root
     }
 
@@ -135,4 +124,18 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
 
         timePicker.show(this.parentFragmentManager, "TIME_PICKER_TAG")
     }
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+        viewModel.task.value?.let { task ->
+            val spinner: Spinner = parent as Spinner
+
+            when (spinner.id) {
+                R.id.prioritySpinner -> task.priority = parent.getItemAtPosition(pos).toString()
+                R.id.categorySpinner -> task.category = parent.getItemAtPosition(pos).toString()
+            }
+            viewModel.task.notifyObserver()
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {}
 }

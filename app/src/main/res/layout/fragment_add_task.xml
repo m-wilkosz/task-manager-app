@@ -37,6 +37,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.task.title}"
                 android:textColor="@color/red3"
                 android:textStyle="bold" />
 
@@ -249,6 +250,7 @@
             android:layout_marginTop="@dimen/margin_medium"
             android:backgroundTint="@color/red3"
             android:text="@string/addButtonText"
+            android:onClick="@{() -> viewModel.saveAddTask()}"
             app:layout_constraintTop_toBottomOf="@id/radioGroupFrequency"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

@@ -2,12 +2,25 @@ package com.lsm.todo_app.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.lsm.todo_app.data.Task
+import com.lsm.todo_app.ui.BaseViewModel
+import java.util.*
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel : BaseViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    private val _taskList = MutableLiveData<List<Task>>()
+    val taskList : LiveData<List<Task>> = _taskList
+
+    init {
+        fetchTaskList()
     }
-    val text: LiveData<String> = _text
+
+    private fun fetchTaskList() {
+        val calendar: Calendar = Calendar.getInstance()
+        var newList = listOf(
+            Task(title = "", priority = "", category = "", date = calendar.time,
+                hour = calendar.get(Calendar.HOUR_OF_DAY), minute = calendar.get(Calendar.MINUTE), frequency = "")
+        )
+        _taskList.value = newList
+    }
 }
