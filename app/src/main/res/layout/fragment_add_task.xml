@@ -127,6 +127,7 @@
             app:startIconDrawable="@drawable/ic_baseline_calendar_month_24_red">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/outlinedTextFieldDateText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{() -> viewModel.showDatePicker()}"
@@ -158,6 +159,7 @@
             app:startIconDrawable="@drawable/ic_baseline_time_24">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/outlinedTextFieldTimeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{() -> viewModel.showTimePicker()}"

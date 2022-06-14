@@ -5,17 +5,17 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.lsm.todo_app.R
 import com.lsm.todo_app.databinding.FragmentAddTaskBinding
 import com.lsm.todo_app.ui.BaseFragment
 import com.lsm.todo_app.ui.notifyObserver
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.java), AdapterView.OnItemSelectedListener {
@@ -62,6 +62,26 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
             categorySpinner.adapter = adapter
             categorySpinner.setSelection(0)
         }
+
+        val radioGroup : RadioGroup = binding.root.findViewById<View>(R.id.radioGroupFrequency) as RadioGroup
+        radioGroup.setOnCheckedChangeListener(object: RadioGroup.OnCheckedChangeListener {
+            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+                val checked = when (checkedId) {
+                    R.id.radio_button_once -> "once"
+                    R.id.radio_button_daily -> "daily"
+                    R.id.radio_button_weekly -> "weekly"
+                    R.id.radio_button_monthly -> "monthly"
+                    R.id.radio_button_yearly -> "yearly"
+                    else -> ""
+                }
+
+                viewModel.task.value?.let { task ->
+                    task.frequency = checked
+                    viewModel.task.notifyObserver()
+                }
+            }
+        })
+
         return root
     }
 
@@ -99,6 +119,9 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
                 task.date = Date(value)
                 viewModel.task.notifyObserver()
             }
+            val textField = binding.root.findViewById<View>(R.id.outlinedTextFieldDateText) as TextInputEditText
+            val format = SimpleDateFormat("dd/MM/yyyy")
+            textField.setText(format.format(Date(value)))
         }
 
         datePicker.show(this.parentFragmentManager, "DATE_PICKER_TAG")
@@ -109,7 +132,7 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
         val timePicker = MaterialTimePicker
             .Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)
-            .setHour(12)
+            .setHour(0)
             .setMinute(0)
             .setTitleText(title)
             .build()
@@ -120,6 +143,8 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
                 task.minute = timePicker.minute
                 viewModel.task.notifyObserver()
             }
+            val textField = binding.root.findViewById<View>(R.id.outlinedTextFieldTimeText) as TextInputEditText
+            textField.setText("${timePicker.hour}:${timePicker.minute}")
         }
 
         timePicker.show(this.parentFragmentManager, "TIME_PICKER_TAG")
