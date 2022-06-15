@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.lsm.todo_app.databinding.FragmentHomeBinding
 import com.lsm.todo_app.ui.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java) {
 
     private var _binding: FragmentHomeBinding? = null

@@ -11,6 +11,7 @@ import com.lsm.todo_app.data.TaskRepository
 import com.lsm.todo_app.ui.BaseFragment
 import com.lsm.todo_app.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalTime
 import java.util.*
@@ -34,7 +35,7 @@ class AddTaskViewModel @Inject constructor(private val taskRepository: TaskRepos
 
     fun saveAddTask() {
         Log.i("saveAddTask", task.value.toString())
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val taskToAdd = task.value
             if (taskToAdd != null) {
                 taskRepository.insert(taskToAdd)
