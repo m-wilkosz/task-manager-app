@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.lsm.todo_app.R
 import com.lsm.todo_app.databinding.FragmentHomeBinding
 import com.lsm.todo_app.ui.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +35,9 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = this.viewModel
         binding.lifecycleOwner = this
+
+        val toolbar = binding.root.findViewById<View>(R.id.toolbar) as Toolbar
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
     }
 
     override fun onDestroyView() {
