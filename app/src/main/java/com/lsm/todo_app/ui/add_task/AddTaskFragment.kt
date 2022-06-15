@@ -15,9 +15,11 @@ import com.lsm.todo_app.R
 import com.lsm.todo_app.databinding.FragmentAddTaskBinding
 import com.lsm.todo_app.ui.BaseFragment
 import com.lsm.todo_app.ui.notifyObserver
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
+@AndroidEntryPoint
 class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.java), AdapterView.OnItemSelectedListener {
 
     private var _binding: FragmentAddTaskBinding? = null

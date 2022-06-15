@@ -5,13 +5,19 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.lsm.todo_app.data.Task
+import com.lsm.todo_app.data.TaskRepository
 import com.lsm.todo_app.ui.BaseFragment
 import com.lsm.todo_app.ui.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.time.LocalTime
 import java.util.*
+import javax.inject.Inject
 
-class AddTaskViewModel : BaseViewModel() {
+@HiltViewModel
+class AddTaskViewModel @Inject constructor(private val taskRepository: TaskRepository) : BaseViewModel() {
 
     val showDatePickerRequest = BaseFragment.SingleLiveEvent<Date>()
     val showTimePickerRequest = BaseFragment.SingleLiveEvent<Int>()
@@ -28,6 +34,12 @@ class AddTaskViewModel : BaseViewModel() {
 
     fun saveAddTask() {
         Log.i("saveAddTask", task.value.toString())
+        viewModelScope.launch {
+            val taskToAdd = task.value
+            if (taskToAdd != null) {
+                taskRepository.insert(taskToAdd)
+            }
+        }
     }
 
     fun showDatePicker() {
