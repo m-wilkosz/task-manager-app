@@ -36,6 +36,16 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java) {
         binding.viewModel = this.viewModel
         binding.lifecycleOwner = this
 
+        var adapter = TaskListAdapter(this.viewModel)
+        binding.viewModel = this.viewModel
+        binding.lifecycleOwner = this.viewLifecycleOwner
+        binding.recycleView.adapter = adapter
+
+        binding.viewModel?.taskList?.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+            adapter.notifyDataSetChanged()
+        }
+
         val toolbar = binding.root.findViewById<View>(R.id.toolbar) as Toolbar
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
     }
