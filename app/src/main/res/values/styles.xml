@@ -7,4 +7,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <style name="TaskCard" parent="">
+        <item name="cardCornerRadius">@dimen/medium_corner_size</item>
+    </style>
+    <dimen name="medium_corner_size">15dp</dimen>
 </resources>

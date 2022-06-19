@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TODO_app</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_stats">Stats</string>
     <string name="title_add_task">Add task</string>
     <string name="taskTitleInputHint">Enter task\'s title</string>
     <string name="addButtonText">Add</string>
@@ -33,5 +33,13 @@
         <item>Social</item>
         <item>Shopping</item>
         <item>Medical exam</item>
+    </string-array>
+    <string-array name="sorting_types">
+        <item>Priority: High to Low</item>
+        <item>Priority: Low to High</item>
+        <item>A to Z</item>
+        <item>Z to A</item>
+        <item>Chronological</item>
+        <item>Reverse chronological</item>
     </string-array>
 </resources>

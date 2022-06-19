@@ -7,12 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.textfield.TextInputEditText
 import com.lsm.todo_app.R
 import com.lsm.todo_app.databinding.FragmentHomeBinding
 import com.lsm.todo_app.ui.BaseFragment
@@ -50,6 +49,19 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             categorySpinner.adapter = adapter
             categorySpinner.setSelection(0)
+        }
+
+        val sortingSpinner: Spinner = root.findViewById(R.id.sortingSpinner)
+        sortingSpinner.onItemSelectedListener = this
+        sortingSpinner.setGravity(Gravity.RIGHT)
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.sorting_types,
+            R.layout.spinner_no_text_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            sortingSpinner.adapter = adapter
+            sortingSpinner.setSelection(0)
         }
 
         return root
@@ -96,6 +108,22 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
             viewModel.choice.value?.let { choice ->
                 choice.date = Date(value)
                 viewModel.choice.notifyObserver()
+
+                val textDay = binding.root.findViewById<View>(R.id.textViewDay) as TextView
+                var tomorrow = Date()
+                val cal = Calendar.getInstance()
+                cal.time = tomorrow
+                cal.add(Calendar.DATE, 1)
+                tomorrow = cal.time
+                var format = SimpleDateFormat("dd/MM/yyyy")
+                when (format.format(viewModel.choice.value?.date)) {
+                    format.format(Calendar.getInstance().getTime()) -> textDay.text = "Today"
+                    format.format(tomorrow) -> textDay.text = "Tomorrow"
+                    else -> {
+                        format = SimpleDateFormat("EEEE, MMMM d")
+                        textDay.text = format.format(viewModel.choice.value?.date).toString()
+                    }
+                }
             }
         }
 
@@ -104,7 +132,12 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
         viewModel.choice.value?.let { choice ->
-            choice.category = parent.getItemAtPosition(pos).toString()
+            val spinner: Spinner = parent as Spinner
+
+            when (spinner.id) {
+                R.id.sortingSpinner -> choice.sortingType = parent.getItemAtPosition(pos).toString()
+                R.id.categorySpinner -> choice.category = parent.getItemAtPosition(pos).toString()
+            }
             viewModel.choice.notifyObserver()
         }
     }
