@@ -11,6 +11,6 @@ interface TaskDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(task: Task) : Long
 
-    @Query("SELECT * FROM Task")
-    fun getTasks() : Flow<List<Task>>
+    @Query("SELECT * FROM Task WHERE Task.date == :date")
+    fun getTasks(date: String) : Flow<List<Task>>
 }

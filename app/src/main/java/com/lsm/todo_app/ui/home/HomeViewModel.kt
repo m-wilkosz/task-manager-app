@@ -7,6 +7,7 @@ import com.lsm.todo_app.data.Task
 import com.lsm.todo_app.data.TaskRepository
 import com.lsm.todo_app.ui.BaseFragment
 import com.lsm.todo_app.ui.BaseViewModel
+import com.lsm.todo_app.ui.notifyObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -19,23 +20,22 @@ class HomeViewModel @Inject constructor(private val taskRepository: TaskReposito
     val showDatePickerRequest = BaseFragment.SingleLiveEvent<Date>()
 
     private val _taskList = MutableLiveData<List<Task>>()
-    val taskList : LiveData<List<Task>> = _taskList
+    var taskList = _taskList
 
     private val _choice = MutableLiveData<Choice>()
-    val choice = _choice
+    var choice = _choice
 
     init {
         fetchTaskList()
-        choice.postValue(Choice())
+        _choice.postValue(Choice(Date(2022,6,20),"",""))
     }
 
     private fun fetchTaskList() {
         viewModelScope.launch {
-            taskRepository.getTasks().collect { list ->
+            taskRepository.getTasks(choice).collect { list ->
                 _taskList.postValue(list)
             }
         }
-
 //        val calendar: Calendar = Calendar.getInstance()
 //        var newList = listOf(
 //            Task(title = "", priority = "", category = "", date = calendar.time,
@@ -48,5 +48,9 @@ class HomeViewModel @Inject constructor(private val taskRepository: TaskReposito
         choice.value?.let {
             showDatePickerRequest.postValue(it.date)
         }
+    }
+
+    fun applyChoice() {
+        fetchTaskList()
     }
 }

@@ -108,6 +108,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
             viewModel.choice.value?.let { choice ->
                 choice.date = Date(value)
                 viewModel.choice.notifyObserver()
+                viewModel.applyChoice()
 
                 val textDay = binding.root.findViewById<View>(R.id.textViewDay) as TextView
                 var tomorrow = Date()

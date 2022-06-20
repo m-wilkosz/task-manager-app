@@ -37,6 +37,10 @@ class AddTaskViewModel @Inject constructor(private val taskRepository: TaskRepos
         Log.i("saveAddTask", task.value.toString())
         viewModelScope.launch(Dispatchers.IO) {
             val taskToAdd = task.value
+            val cal = Calendar.getInstance()
+            cal.setTime(task.value?.date)
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            task.value?.date = cal.time
             if (taskToAdd != null) {
                 taskRepository.insert(taskToAdd)
             }
