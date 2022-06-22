@@ -43,7 +43,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
         categorySpinner.setGravity(Gravity.RIGHT)
         ArrayAdapter.createFromResource(
             requireContext(),
-            R.array.categories,
+            R.array.categoriesAll,
             R.layout.spinner_no_text_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -140,6 +140,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
                 R.id.categorySpinner -> choice.category = parent.getItemAtPosition(pos).toString()
             }
             viewModel.choice.notifyObserver()
+            viewModel.applyChoice()
         }
     }
 

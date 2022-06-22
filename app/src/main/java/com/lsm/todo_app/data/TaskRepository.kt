@@ -20,6 +20,17 @@ class TaskRepository @Inject constructor(private val taskDao: TaskDao) {
         val date0 = cal.time
         val dateLong : Long = date0.time
         val dateString : String = dateLong.toString()
-        return taskDao.getTasks(dateString)
+
+        val category : String? = if (choice.value?.category == "All") "%" else choice.value?.category
+
+        return when (choice.value?.sortingType) {
+
+            "Priority: High to Low" -> taskDao.getTasksHighToLow(dateString, category)
+            "Priority: Low to High" -> taskDao.getTasksLowToHigh(dateString, category)
+            "A to Z" -> taskDao.getTasksAtoZ(dateString, category)
+            "Z to A" -> taskDao.getTasksZtoA(dateString, category)
+            "Chronological" -> taskDao.getTasksChrono(dateString, category)
+            else -> taskDao.getTasksReverseChrono(dateString, category)
+        }
     }
 }

@@ -34,6 +34,17 @@
         <item>Shopping</item>
         <item>Medical exam</item>
     </string-array>
+    <string-array name="categoriesAll">
+        <item>All</item>
+        <item>Work</item>
+        <item>Learning</item>
+        <item>Housework</item>
+        <item>Hobby</item>
+        <item>Family</item>
+        <item>Social</item>
+        <item>Shopping</item>
+        <item>Medical exam</item>
+    </string-array>
     <string-array name="sorting_types">
         <item>Priority: High to Low</item>
         <item>Priority: Low to High</item>
