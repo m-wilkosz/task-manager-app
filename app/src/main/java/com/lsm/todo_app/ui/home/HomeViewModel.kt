@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(private val taskRepository: TaskReposito
 
     init {
         fetchTaskList()
-        _choice.postValue(Choice(Date(2022,6,20),"",""))
+        _choice.postValue(Choice(Date(2022,6,20),"All","Chronological"))
     }
 
     private fun fetchTaskList() {
@@ -34,12 +34,6 @@ class HomeViewModel @Inject constructor(private val taskRepository: TaskReposito
                 _taskList.postValue(list)
             }
         }
-//        val calendar: Calendar = Calendar.getInstance()
-//        var newList = listOf(
-//            Task(title = "", priority = "", category = "", date = calendar.time,
-//                hour = calendar.get(Calendar.HOUR_OF_DAY), minute = calendar.get(Calendar.MINUTE), frequency = "")
-//        )
-//        _taskList.value = newList
     }
 
     fun showDatePicker() {
@@ -49,6 +43,13 @@ class HomeViewModel @Inject constructor(private val taskRepository: TaskReposito
     }
 
     fun applyChoice() {
+        fetchTaskList()
+    }
+
+    fun deleteTask(id: Long) {
+        viewModelScope.launch {
+            taskRepository.deleteTask(id)
+        }
         fetchTaskList()
     }
 }

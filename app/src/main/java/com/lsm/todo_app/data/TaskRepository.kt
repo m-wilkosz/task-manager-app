@@ -33,4 +33,6 @@ class TaskRepository @Inject constructor(private val taskDao: TaskDao) {
             else -> taskDao.getTasksReverseChrono(dateString, category)
         }
     }
+
+    fun deleteTask(id: Long) = taskDao.deleteTask(id)
 }

@@ -28,4 +28,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM Task WHERE Task.date == :date AND Task.category LIKE :category ORDER BY Task.hour DESC, Task.minute ASC")
     fun getTasksReverseChrono(date: String, category: String?) : Flow<List<Task>>
+
+    @Query("DELETE FROM Task WHERE Task.id = :id")
+    fun deleteTask(id: Long)
 }

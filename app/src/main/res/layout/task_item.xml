@@ -52,13 +52,15 @@
             android:layout_marginStart="@dimen/margin_small"
             app:srcCompat="@drawable/ic_baseline_edit_24" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageViewDelete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="@dimen/margin_small"
-            app:srcCompat="@drawable/ic_baseline_delete_24" />
-    </LinearLayout>
+            app:srcCompat="@drawable/ic_baseline_delete_24"
+            android:background="@color/white"
+            android:onClick="@{() -> viewModel.deleteTask(item.id)}"/>
 
+    </LinearLayout>
 </layout>
