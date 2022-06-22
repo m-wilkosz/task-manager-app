@@ -1,13 +1,11 @@
 package com.lsm.todo_app.ui.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.lsm.todo_app.data.Task
 import com.lsm.todo_app.data.TaskRepository
 import com.lsm.todo_app.ui.BaseFragment
 import com.lsm.todo_app.ui.BaseViewModel
-import com.lsm.todo_app.ui.notifyObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

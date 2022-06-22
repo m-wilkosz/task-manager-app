@@ -2,9 +2,11 @@ package com.lsm.todo_app.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.lsm.todo_app.R
 import com.lsm.todo_app.data.Task
 import com.lsm.todo_app.databinding.TaskItemBinding
 
@@ -15,6 +17,13 @@ class TaskListAdapter(private val homeViewModel: HomeViewModel) : ListAdapter<Ta
                 fun bind(item: Task) = with(itemView) {
                     binding.item = item
                     binding.viewModel = homeViewModel
+                        val imageViewPriority : ImageView = binding.imageViewPriority
+
+                        when (item.priority) {
+                            "High" -> imageViewPriority.setImageResource(R.drawable.ic_baseline_circle_24_red)
+                            "Medium" -> imageViewPriority.setImageResource(R.drawable.ic_baseline_circle_24_yellow)
+                            "Low" -> imageViewPriority.setImageResource(R.drawable.ic_baseline_circle_24_green)
+                        }
                 }
             }
 
