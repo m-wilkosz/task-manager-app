@@ -24,8 +24,8 @@ class HomeViewModel @Inject constructor(private val taskRepository: TaskReposito
     var choice = _choice
 
     init {
-        fetchTaskList()
         _choice.postValue(Choice(Date(2022,6,20),"All","Chronological"))
+        fetchTaskList()
     }
 
     private fun fetchTaskList() {
@@ -49,6 +49,13 @@ class HomeViewModel @Inject constructor(private val taskRepository: TaskReposito
     fun deleteTask(id: Long) {
         viewModelScope.launch {
             taskRepository.deleteTask(id)
+        }
+        fetchTaskList()
+    }
+
+    fun setTaskDone(id: Long) {
+        viewModelScope.launch {
+            taskRepository.setTaskDone(id)
         }
         fetchTaskList()
     }

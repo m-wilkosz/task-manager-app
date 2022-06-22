@@ -36,13 +36,15 @@
             android:layout_marginStart="@dimen/margin_small"
             android:text="@{item.title, default=title}" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageViewDone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="@dimen/margin_small"
-            app:srcCompat="@drawable/ic_baseline_check_circle_outline_24" />
+            app:srcCompat="@drawable/ic_baseline_check_circle_outline_24"
+            android:background="@color/white"
+            android:onClick="@{() -> viewModel.setTaskDone(item.id)}"/>
 
         <ImageView
             android:id="@+id/imageViewEdit"

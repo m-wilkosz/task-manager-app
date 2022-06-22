@@ -13,5 +13,6 @@ data class Task (
     var date: Date,
     var hour: Int = 0,
     var minute: Int = 0,
-    var frequency: String = ""
+    var frequency: String = "",
+    var status: String = "undone"
 )
