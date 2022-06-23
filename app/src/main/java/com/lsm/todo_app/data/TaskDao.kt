@@ -34,4 +34,7 @@ interface TaskDao {
 
     @Query("UPDATE Task SET status = 'done' WHERE Task.id == :id")
     fun setTaskDone(id: Long)
+
+    @Query("SELECT * FROM Task WHERE Task.id == :id")
+    fun getTaskById(id: Long) : Task
 }

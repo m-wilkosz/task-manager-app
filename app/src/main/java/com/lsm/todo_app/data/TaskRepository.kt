@@ -37,4 +37,6 @@ class TaskRepository @Inject constructor(private val taskDao: TaskDao) {
     fun deleteTask(id: Long) = taskDao.deleteTask(id)
 
     fun setTaskDone(id: Long) = taskDao.setTaskDone(id)
+
+    fun getTaskById(id: Long) : Task = taskDao.getTaskById(id)
 }

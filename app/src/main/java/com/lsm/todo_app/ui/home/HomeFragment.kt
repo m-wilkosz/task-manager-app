@@ -5,13 +5,11 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lsm.todo_app.R
 import com.lsm.todo_app.databinding.FragmentHomeBinding
 import com.lsm.todo_app.ui.BaseFragment
@@ -73,6 +71,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
         binding.lifecycleOwner = this
 
         observeShowDatePickerRequest()
+        observeTaskDescriptionRequest()
 
         var adapter = TaskListAdapter(this.viewModel)
         binding.viewModel = this.viewModel
@@ -98,6 +97,36 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
     private fun observeShowDatePickerRequest() {
         viewModel.showDatePickerRequest.observe(this.viewLifecycleOwner) {
             showDatePicker()
+        }
+    }
+
+    private fun observeTaskDescriptionRequest() {
+        viewModel.showTaskDescriptionRequest.observe(this.viewLifecycleOwner) {
+            viewModel.showTaskDescriptionRequest.value?.let { id -> showTaskDescriptionDialog(id) }
+        }
+    }
+
+    private fun showTaskDescriptionDialog(id: Long) {
+
+        viewModel.fetchTask(id)
+        viewModel.task.value?.let {
+            val minute: String = if (it.minute == 0)
+                "00"
+            else
+                it.minute.toString()
+            val items = arrayOf(
+                "Title: ${it.title}",
+                "Priority: ${it.priority}",
+                "Category: ${it.category}",
+                "Hour: ${it.hour}:${minute}",
+                "Frequency: ${it.frequency}"
+            )
+            context?.let {
+                MaterialAlertDialogBuilder(it)
+                    .setTitle("Task description")
+                    .setItems(items) { dialog, which -> }
+                    .show()
+            }
         }
     }
 

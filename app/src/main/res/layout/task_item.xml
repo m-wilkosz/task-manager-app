@@ -19,45 +19,44 @@
         android:orientation="horizontal"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginEnd="@dimen/margin_small"
-        android:weightSum="12">
+        android:weightSum="11">
 
         <ImageView
             android:id="@+id/imageViewPriority"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_baseline_circle_24_red" />
 
-        <TextView
-            android:id="@+id/textViewTitle"
+        <Button
+            android:id="@+id/buttonTitle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="8"
+            android:layout_height="@dimen/taskTitleButtonHeight"
+            android:layout_weight="7"
+            android:backgroundTint="@color/white"
             android:layout_marginStart="@dimen/margin_small"
-            android:text="@{item.title, default=title}" />
+            android:textColor="@color/gray"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="@{item.title, default=title}"
+            android:onClick="@{() -> viewModel.showTaskDescription(item.id)}"/>
 
         <ImageButton
             android:id="@+id/imageViewDone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="2"
             android:layout_marginStart="@dimen/margin_small"
             app:srcCompat="@drawable/ic_baseline_check_circle_outline_24"
             android:background="@color/white"
             android:onClick="@{() -> viewModel.setTaskDone(item.id)}"/>
 
-        <ImageView
-            android:id="@+id/imageViewEdit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="@dimen/margin_small"
-            app:srcCompat="@drawable/ic_baseline_edit_24" />
-
         <ImageButton
             android:id="@+id/imageViewDelete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
             android:layout_weight="1"
             android:layout_marginStart="@dimen/margin_small"
             app:srcCompat="@drawable/ic_baseline_delete_24"

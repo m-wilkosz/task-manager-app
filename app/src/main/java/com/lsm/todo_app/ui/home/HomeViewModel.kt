@@ -16,12 +16,16 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(private val taskRepository: TaskRepository) : BaseViewModel() {
 
     val showDatePickerRequest = BaseFragment.SingleLiveEvent<Date>()
+    val showTaskDescriptionRequest = BaseFragment.SingleLiveEvent<Long>()
 
     private val _taskList = MutableLiveData<List<Task>>()
     var taskList = _taskList
 
     private val _choice = MutableLiveData<Choice>()
     var choice = _choice
+
+    private val _task = MutableLiveData<Task>()
+    var task = _task
 
     init {
         _choice.postValue(Choice(Date(2022,6,20),"All","Chronological"))
@@ -58,5 +62,15 @@ class HomeViewModel @Inject constructor(private val taskRepository: TaskReposito
             taskRepository.setTaskDone(id)
         }
         fetchTaskList()
+    }
+
+    fun showTaskDescription(id: Long) {
+        showTaskDescriptionRequest.postValue(id)
+    }
+
+    fun fetchTask(id: Long) {
+        viewModelScope.launch {
+            _task.postValue(taskRepository.getTaskById(id))
+        }
     }
 }

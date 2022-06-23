@@ -146,7 +146,10 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
                 viewModel.task.notifyObserver()
             }
             val textField = binding.root.findViewById<View>(R.id.outlinedTextFieldTimeText) as TextInputEditText
-            textField.setText("${timePicker.hour}:${timePicker.minute}")
+            if (timePicker.minute == 0)
+                textField.setText("${timePicker.hour}:00")
+            else
+                textField.setText("${timePicker.hour}:${timePicker.minute}")
         }
 
         timePicker.show(this.parentFragmentManager, "TIME_PICKER_TAG")
