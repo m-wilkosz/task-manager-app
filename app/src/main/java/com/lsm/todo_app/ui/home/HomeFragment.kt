@@ -48,7 +48,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             categorySpinner.adapter = adapter
-            categorySpinner.setSelection(4)
+            categorySpinner.setSelection(0)
         }
 
         val sortingSpinner: Spinner = root.findViewById(R.id.sortingSpinner)
@@ -61,7 +61,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             sortingSpinner.adapter = adapter
-            sortingSpinner.setSelection(0)
+            sortingSpinner.setSelection(4)
         }
 
         return root
