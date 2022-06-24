@@ -22,6 +22,7 @@ class AddTaskViewModel @Inject constructor(private val taskRepository: TaskRepos
 
     val showDatePickerRequest = BaseFragment.SingleLiveEvent<Date>()
     val showTimePickerRequest = BaseFragment.SingleLiveEvent<Int>()
+    val setAlarmRequest = BaseFragment.SingleLiveEvent<Task>()
 
     private val _task = MutableLiveData<Task>()
     val task = _task
@@ -44,6 +45,7 @@ class AddTaskViewModel @Inject constructor(private val taskRepository: TaskRepos
             if (taskToAdd != null) {
                 taskRepository.insert(taskToAdd)
             }
+            setAlarmRequest.postValue(taskToAdd)
         }
     }
 

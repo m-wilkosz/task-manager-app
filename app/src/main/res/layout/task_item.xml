@@ -39,6 +39,7 @@
             android:textColor="@color/gray"
             style="?android:attr/borderlessButtonStyle"
             android:text="@{item.title, default=title}"
+            android:textAllCaps="false"
             android:onClick="@{() -> viewModel.showTaskDescription(item.id)}"/>
 
         <ImageButton
