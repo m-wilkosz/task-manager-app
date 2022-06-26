@@ -1,17 +1,28 @@
 package com.lsm.todo_app.ui.add_task
 
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.lsm.todo_app.R
+import com.lsm.todo_app.data.Task
 import com.lsm.todo_app.databinding.FragmentAddTaskBinding
 import com.lsm.todo_app.ui.BaseFragment
 import com.lsm.todo_app.ui.notifyObserver
@@ -99,6 +110,7 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
 
         observeShowDatePickerRequest()
         observeShowTimePickerRequest()
+        observeSetAlarmRequest()
     }
 
     private fun observeShowDatePickerRequest() {
@@ -110,6 +122,54 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
     private fun observeShowTimePickerRequest() {
         viewModel.showTimePickerRequest.observe(this.viewLifecycleOwner) {
             showTimePicker()
+        }
+    }
+
+    private fun observeSetAlarmRequest() {
+        viewModel.setAlarmRequest.observe(this.viewLifecycleOwner) {
+            setAlarm(it)
+        }
+    }
+
+    private fun setAlarm(task: Task) {
+        createNotificationChannel()
+        Log.d("Alarm", "Call setAlarm from AddTaskFragment")
+        val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+        val intent = Intent(context, BroadcastAlarm::class.java)
+        intent.putExtra("title", task.title)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+
+        val calendar: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.YEAR, task.date.year)
+            set(Calendar.DATE, task.date.month, task.date.day, task.hour, task.minute)
+        }
+
+        val interval : Long = when (task.frequency) {
+            "once" -> Long.MAX_VALUE
+            "daily" -> AlarmManager.INTERVAL_DAY
+            "weekly" -> AlarmManager.INTERVAL_DAY * 7
+            "monthly" -> Long.MAX_VALUE
+            else -> {Long.MAX_VALUE}
+        }
+
+        alarmManager?.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            interval,
+            pendingIntent
+        )
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("0", "channel_name", importance)
+            channel.description = "channel desc"
+
+            val a : NotificationManager? = null
+            val notificationManager = NotificationManagerCompat.from(this.requireContext())
+            notificationManager.createNotificationChannel(channel)
         }
     }
 
@@ -146,8 +206,8 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
                 viewModel.task.notifyObserver()
             }
             val textField = binding.root.findViewById<View>(R.id.outlinedTextFieldTimeText) as TextInputEditText
-            if (timePicker.minute == 0)
-                textField.setText("${timePicker.hour}:00")
+            if (timePicker.minute < 10)
+                textField.setText("${timePicker.hour}:0${timePicker.minute}")
             else
                 textField.setText("${timePicker.hour}:${timePicker.minute}")
         }
