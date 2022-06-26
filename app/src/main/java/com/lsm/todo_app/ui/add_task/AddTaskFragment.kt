@@ -141,8 +141,14 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
 
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.YEAR, task.date.year)
-            set(Calendar.DATE, task.date.month, task.date.day, task.hour, task.minute)
+            clear()
+            set(Calendar.YEAR, task.year)
+            set(Calendar.MONTH, task.month - 1)
+            set(Calendar.DAY_OF_MONTH, task.day)
+            set(Calendar.HOUR_OF_DAY, task.hour)
+            set(Calendar.MINUTE, task.minute)
+            set(Calendar.SECOND, 0)
+            set(Calendar.AM_PM, Calendar.PM)
         }
 
         val interval : Long = when (task.frequency) {

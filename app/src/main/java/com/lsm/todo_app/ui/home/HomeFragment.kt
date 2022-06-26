@@ -110,8 +110,8 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
 
         viewModel.fetchTask(id)
         viewModel.task.value?.let {
-            val minute: String = if (it.minute == 0)
-                "00"
+            val minute: String = if (it.minute < 10)
+                "0" + it.minute.toString()
             else
                 it.minute.toString()
             val items = arrayOf(

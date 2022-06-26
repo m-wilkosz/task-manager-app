@@ -13,7 +13,7 @@ class TaskRepository @Inject constructor(private val taskDao: TaskDao) {
 
     fun insert(task: Task) : Long {
 
-        task.year = task.date.year
+        task.year = task.date.year + 1900
         task.month = task.date.month + 1
         task.day = task.date.date
         task.dayOfWeek = sdf.format(task.date)
