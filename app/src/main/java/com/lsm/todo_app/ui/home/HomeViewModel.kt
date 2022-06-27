@@ -27,6 +27,8 @@ class HomeViewModel @Inject constructor(private val taskRepository: TaskReposito
     private val _task = MutableLiveData<Task>()
     var task = _task
 
+    val cancelAlarmRequest = BaseFragment.SingleLiveEvent<Long>()
+
     init {
         val cal: Calendar = Calendar.getInstance()
         cal.timeInMillis = System.currentTimeMillis()
@@ -59,6 +61,7 @@ class HomeViewModel @Inject constructor(private val taskRepository: TaskReposito
         viewModelScope.launch {
             taskRepository.deleteTask(id)
         }
+        cancelAlarmRequest.postValue(id)
         fetchTaskList()
     }
 

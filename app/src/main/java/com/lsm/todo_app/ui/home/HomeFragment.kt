@@ -1,5 +1,9 @@
 package com.lsm.todo_app.ui.home
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -13,6 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lsm.todo_app.R
 import com.lsm.todo_app.databinding.FragmentHomeBinding
 import com.lsm.todo_app.ui.BaseFragment
+import com.lsm.todo_app.ui.add_task.BroadcastAlarm
 import com.lsm.todo_app.ui.notifyObserver
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -76,6 +81,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
 
         observeShowDatePickerRequest()
         observeTaskDescriptionRequest()
+        observeCancelAlarmRequest()
 
         var adapter = TaskListAdapter(this.viewModel)
         binding.viewModel = this.viewModel
@@ -107,6 +113,16 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
     private fun observeTaskDescriptionRequest() {
         viewModel.showTaskDescriptionRequest.observe(this.viewLifecycleOwner) {
             viewModel.showTaskDescriptionRequest.value?.let { id -> showTaskDescriptionDialog(id) }
+        }
+    }
+
+    private fun observeCancelAlarmRequest() {
+        viewModel.cancelAlarmRequest.observe(this.viewLifecycleOwner) {
+            val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+            val intent = Intent(context, BroadcastAlarm::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(context, it.toInt(), intent, 0)
+
+            alarmManager?.cancel(pendingIntent)
         }
     }
 
