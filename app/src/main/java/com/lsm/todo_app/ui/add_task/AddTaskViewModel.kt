@@ -27,6 +27,8 @@ class AddTaskViewModel @Inject constructor(private val taskRepository: TaskRepos
     private val _task = MutableLiveData<Task>()
     val task = _task
 
+    var id: Long = 0
+
     override fun prepare(args: Bundle?) {
         super.prepare(args)
         val calendar: Calendar = Calendar.getInstance()
@@ -43,7 +45,7 @@ class AddTaskViewModel @Inject constructor(private val taskRepository: TaskRepos
             cal.set(Calendar.HOUR_OF_DAY, 0)
             task.value?.date = cal.time
             if (taskToAdd != null) {
-                taskRepository.insert(taskToAdd)
+                id = taskRepository.insert(taskToAdd)
             }
             setAlarmRequest.postValue(taskToAdd)
         }

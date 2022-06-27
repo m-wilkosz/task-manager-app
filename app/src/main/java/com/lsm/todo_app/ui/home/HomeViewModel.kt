@@ -28,7 +28,12 @@ class HomeViewModel @Inject constructor(private val taskRepository: TaskReposito
     var task = _task
 
     init {
-        _choice.postValue(Choice(Date(2022,6,20),"All","Chronological"))
+        val cal: Calendar = Calendar.getInstance()
+        cal.timeInMillis = System.currentTimeMillis()
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH) + 1
+        val day = cal.get(Calendar.DAY_OF_MONTH)
+        _choice.postValue(Choice(Date(year, month, day), "All", "Chronological"))
         fetchTaskList()
     }
 

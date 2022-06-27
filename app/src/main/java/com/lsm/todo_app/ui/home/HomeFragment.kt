@@ -28,6 +28,8 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private var dayString: String = "Select date"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,6 +63,8 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
             sortingSpinner.adapter = adapter
             sortingSpinner.setSelection(4)
         }
+        val textDay = binding.root.findViewById<View>(R.id.textViewDay) as TextView
+        textDay.setText(dayString)
 
         return root
     }
@@ -147,13 +151,14 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
                 tomorrow = cal.time
                 var format = SimpleDateFormat("dd/MM/yyyy")
                 when (format.format(viewModel.choice.value?.date)) {
-                    format.format(Calendar.getInstance().getTime()) -> textDay.text = "Today"
-                    format.format(tomorrow) -> textDay.text = "Tomorrow"
+                    format.format(Calendar.getInstance().getTime()) -> dayString = "Today"
+                    format.format(tomorrow) -> dayString = "Tomorrow"
                     else -> {
                         format = SimpleDateFormat("EEEE, MMMM d")
-                        textDay.text = format.format(viewModel.choice.value?.date).toString()
+                        dayString = format.format(viewModel.choice.value?.date).toString()
                     }
                 }
+                textDay.setText(dayString)
             }
         }
 

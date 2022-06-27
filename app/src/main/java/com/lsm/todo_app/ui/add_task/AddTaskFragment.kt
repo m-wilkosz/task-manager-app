@@ -137,7 +137,7 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         val intent = Intent(context, BroadcastAlarm::class.java)
         intent.putExtra("title", task.title)
-        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+        val pendingIntent = PendingIntent.getBroadcast(context, viewModel.id.toInt(), intent, 0)
 
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
@@ -155,7 +155,6 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
             "once" -> Long.MAX_VALUE
             "daily" -> AlarmManager.INTERVAL_DAY
             "weekly" -> AlarmManager.INTERVAL_DAY * 7
-            "monthly" -> Long.MAX_VALUE
             else -> {Long.MAX_VALUE}
         }
 
