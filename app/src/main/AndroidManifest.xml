@@ -22,6 +22,14 @@
             </intent-filter>
         </activity>
         <receiver android:name=".ui.add_task.BroadcastAlarm"/>
+        <receiver android:name=".ui.add_task.BootReceiver"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
     </application>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
 </manifest>

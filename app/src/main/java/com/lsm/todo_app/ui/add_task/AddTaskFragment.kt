@@ -39,6 +39,8 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private val bootReceiver = BootReceiver()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -111,6 +113,7 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
         observeShowDatePickerRequest()
         observeShowTimePickerRequest()
         observeSetAlarmRequest()
+        observeBootCompleted()
     }
 
     private fun observeShowDatePickerRequest() {
@@ -128,6 +131,15 @@ class AddTaskFragment : BaseFragment<AddTaskViewModel>(AddTaskViewModel::class.j
     private fun observeSetAlarmRequest() {
         viewModel.setAlarmRequest.observe(this.viewLifecycleOwner) {
             setAlarm(it)
+        }
+    }
+
+    private fun observeBootCompleted() {
+        bootReceiver.bootCompleted.observe(this.viewLifecycleOwner) {
+            val taskList = viewModel.getAllTasks()
+
+            for (item in taskList)
+                setAlarm(item)
         }
     }
 

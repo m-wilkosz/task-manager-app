@@ -41,4 +41,7 @@ interface TaskDao {
 
     @Query("UPDATE Task SET date = :date, year = :year, month = :month, day = :day, doneCounter = doneCounter + 1 WHERE Task.id == :id")
     fun updateDate(date: Date, id: Long, year: Int, month: Int, day: Int)
+
+    @Query("SELECT * FROM Task WHERE Task.status LIKE 'undone'")
+    fun getAllTasks() : List<Task>
 }

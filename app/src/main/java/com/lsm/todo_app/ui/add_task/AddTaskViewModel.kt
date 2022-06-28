@@ -54,6 +54,8 @@ class AddTaskViewModel @Inject constructor(private val taskRepository: TaskRepos
         }
     }
 
+    fun getAllTasks() = taskRepository.getAllTasks()
+
     fun showDatePicker() {
         task.value?.let {
             showDatePickerRequest.postValue(it.date)
