@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.lsm.todo_app.databinding.FragmentDashboardBinding
+import com.lsm.todo_app.ui.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-class DashboardFragment : Fragment() {
+@AndroidEntryPoint
+class DashboardFragment : BaseFragment<DashboardViewModel>(DashboardViewModel::class.java) {
 
     private var _binding: FragmentDashboardBinding? = null
 
@@ -28,10 +29,6 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 

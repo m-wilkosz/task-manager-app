@@ -19,6 +19,7 @@
     <string name="radio_button_yearly_text">Yearly</string>
     <string name="choose_frequency_text">Frequency:</string>
     <string name="text_day_name">Today</string>
+    <string name="statisticsText">Statistics</string>
     <string-array name="priorities">
         <item>High</item>
         <item>Medium</item>

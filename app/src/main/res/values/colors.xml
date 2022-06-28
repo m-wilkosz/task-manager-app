@@ -6,6 +6,8 @@
     <color name="green1">#B2F0B2</color>
     <color name="green2">#99EB99</color>
     <color name="green3">#66E166</color> <!--4CDC4C-->
+    <color name="blue1">#89CFF0</color>
+    <color name="blue2">#0096FF</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
