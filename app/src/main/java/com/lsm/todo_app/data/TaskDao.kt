@@ -44,4 +44,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM Task WHERE Task.status LIKE 'undone'")
     fun getAllTasks() : List<Task>
+
+    @Query("SELECT * FROM Task WHERE Task.status LIKE 'done'")
+    fun getAllDoneTasks() : List<Task>
 }

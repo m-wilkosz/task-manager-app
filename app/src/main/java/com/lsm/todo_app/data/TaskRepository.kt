@@ -62,4 +62,6 @@ class TaskRepository @Inject constructor(private val taskDao: TaskDao) {
     fun updateDate(date: Date, id: Long, year: Int, month: Int, day: Int) = taskDao.updateDate(date, id, year, month, day)
 
     fun getAllTasks() : List<Task> = taskDao.getAllTasks()
+
+    fun getAllDoneTasks() : List<Task> = taskDao.getAllDoneTasks()
 }
