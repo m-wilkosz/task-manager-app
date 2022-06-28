@@ -28,6 +28,9 @@ class TaskRepository @Inject constructor(private val taskDao: TaskDao) {
             cal.time = date
         }
         cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
         val date0 = cal.time
         val dateLong : Long = date0.time
         val dateString : String = dateLong.toString()
@@ -35,7 +38,7 @@ class TaskRepository @Inject constructor(private val taskDao: TaskDao) {
         val category : String? = if (choice.value?.category == "All") "%" else choice.value?.category
 
         val dayOfWeek: String? = date?.let { sdf.format(it) }
-        val year: Int? = choice.value?.date?.year
+        val year: Int? = choice.value?.date?.year?.plus(1900)
         val month: Int? = (choice.value?.date?.month)?.plus(1)
         val day: Int? = choice.value?.date?.date
 
@@ -55,4 +58,6 @@ class TaskRepository @Inject constructor(private val taskDao: TaskDao) {
     fun setTaskDone(id: Long) = taskDao.setTaskDone(id)
 
     fun getTaskById(id: Long) : Task = taskDao.getTaskById(id)
+
+    fun updateDate(date: Date, id: Long, year: Int, month: Int, day: Int) = taskDao.updateDate(date, id, year, month, day)
 }

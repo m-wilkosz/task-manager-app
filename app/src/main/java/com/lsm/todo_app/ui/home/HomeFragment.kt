@@ -91,6 +91,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
         binding.viewModel?.taskList?.observe(viewLifecycleOwner) {
             adapter.submitList(it)
             adapter.notifyDataSetChanged()
+            changeDateName()
         }
 
         val toolbar = binding.root.findViewById<View>(R.id.toolbar) as Toolbar
@@ -159,22 +160,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
                 viewModel.choice.notifyObserver()
                 viewModel.applyChoice()
 
-                val textDay = binding.root.findViewById<View>(R.id.textViewDay) as TextView
-                var tomorrow = Date()
-                val cal = Calendar.getInstance()
-                cal.time = tomorrow
-                cal.add(Calendar.DATE, 1)
-                tomorrow = cal.time
-                var format = SimpleDateFormat("dd/MM/yyyy")
-                when (format.format(viewModel.choice.value?.date)) {
-                    format.format(Calendar.getInstance().getTime()) -> dayString = "Today"
-                    format.format(tomorrow) -> dayString = "Tomorrow"
-                    else -> {
-                        format = SimpleDateFormat("EEEE, MMMM d")
-                        dayString = format.format(viewModel.choice.value?.date).toString()
-                    }
-                }
-                textDay.setText(dayString)
+                changeDateName()
             }
         }
 
@@ -195,4 +181,24 @@ class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
     }
 
     override fun onNothingSelected(parent: AdapterView<*>) {}
+
+    private fun changeDateName() {
+
+        val textDay = binding.root.findViewById<View>(R.id.textViewDay) as TextView
+        var tomorrow = Date()
+        val cal = Calendar.getInstance()
+        cal.time = tomorrow
+        cal.add(Calendar.DATE, 1)
+        tomorrow = cal.time
+        var format = SimpleDateFormat("dd/MM/yyyy")
+        when (format.format(viewModel.choice.value?.date)) {
+            format.format(Calendar.getInstance().getTime()) -> dayString = "Today"
+            format.format(tomorrow) -> dayString = "Tomorrow"
+            else -> {
+                format = SimpleDateFormat("EEEE, MMMM d")
+                dayString = format.format(viewModel.choice.value?.date).toString()
+            }
+        }
+        textDay.setText(dayString)
+    }
 }

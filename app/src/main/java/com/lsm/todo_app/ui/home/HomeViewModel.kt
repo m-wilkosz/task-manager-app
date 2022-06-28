@@ -32,10 +32,15 @@ class HomeViewModel @Inject constructor(private val taskRepository: TaskReposito
     init {
         val cal: Calendar = Calendar.getInstance()
         cal.timeInMillis = System.currentTimeMillis()
-        val year = cal.get(Calendar.YEAR)
-        val month = cal.get(Calendar.MONTH) + 1
-        val day = cal.get(Calendar.DAY_OF_MONTH)
-        _choice.postValue(Choice(Date(year, month, day), "All", "Chronological"))
+        cal[Calendar.YEAR] = cal.time.year + 1900
+        cal[Calendar.MONTH] = cal.time.month
+        cal[Calendar.DAY_OF_MONTH] = cal.time.date
+        cal[Calendar.HOUR_OF_DAY] = 0
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        val date = cal.time
+        _choice.postValue(Choice(date, "All", "Chronological"))
         fetchTaskList()
     }
 
@@ -67,7 +72,48 @@ class HomeViewModel @Inject constructor(private val taskRepository: TaskReposito
 
     fun setTaskDone(id: Long) {
         viewModelScope.launch {
-            taskRepository.setTaskDone(id)
+            val taskToModify: Task = taskRepository.getTaskById(id)
+            when (taskToModify.frequency) {
+                "once" -> taskRepository.setTaskDone(id)
+                "daily" -> taskToModify.day += 1
+                "weekly" -> {
+                    when (taskToModify.month) {
+                        1, 3, 5, 7, 8, 10, 12 -> {
+                            val newDay = (taskToModify.day + 7) % 31
+                            if (newDay < taskToModify.day) {
+                                taskToModify.month += 1
+                            }
+                            taskToModify.day = newDay
+                        }
+                        4, 6, 9, 11 -> {
+                            val newDay = (taskToModify.day + 7) % 30
+                            if (newDay < taskToModify.day) {
+                                taskToModify.month += 1
+                            }
+                            taskToModify.day = newDay
+                        }
+                        else -> {
+                            val newDay = (taskToModify.day + 7) % 28
+                            if (newDay < taskToModify.day) {
+                                taskToModify.month += 1
+                            }
+                            taskToModify.day = newDay
+                        }
+                    }
+                }
+                "monthly" -> taskToModify.month = (taskToModify.month + 1) % 12
+                "yearly" -> taskToModify.year += 1
+            }
+            val cal = Calendar.getInstance()
+            cal[Calendar.YEAR] = taskToModify.year
+            cal[Calendar.MONTH] = taskToModify.month - 1
+            cal[Calendar.DAY_OF_MONTH] = taskToModify.day
+            cal[Calendar.HOUR_OF_DAY] = 0
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
+            cal.set(Calendar.MILLISECOND, 0)
+            val date = cal.time
+            taskRepository.updateDate(date, id, taskToModify.year, taskToModify.month, taskToModify.day)
         }
         fetchTaskList()
     }

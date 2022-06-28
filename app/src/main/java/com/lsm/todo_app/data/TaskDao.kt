@@ -5,8 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import java.time.DayOfWeek
-import java.time.Year
+import java.util.*
 
 @Dao
 interface TaskDao {
@@ -39,4 +38,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM Task WHERE Task.id == :id")
     fun getTaskById(id: Long) : Task
+
+    @Query("UPDATE Task SET date = :date, year = :year, month = :month, day = :day, doneCounter = doneCounter + 1 WHERE Task.id == :id")
+    fun updateDate(date: Date, id: Long, year: Int, month: Int, day: Int)
 }
