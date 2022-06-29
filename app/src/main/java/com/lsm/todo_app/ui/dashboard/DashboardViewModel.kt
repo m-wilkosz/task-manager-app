@@ -14,10 +14,15 @@ class DashboardViewModel @Inject constructor(private val taskRepository: TaskRep
 
     private var _undoneList : List<Task> = emptyList()
     private var _doneList : List<Task> = emptyList()
-    private var doneTasksQty = MutableLiveData<Int>()
-    private var undoneTasksQty = MutableLiveData<Int>()
+
+    var doneTasksNum = MutableLiveData<Int>()
+    var undoneTasksNum = MutableLiveData<Int>()
 
     init {
+        reloadData()
+    }
+
+    fun reloadData() {
         fetchUndoneList()
         fetchDoneList()
         countUndone()
@@ -37,7 +42,7 @@ class DashboardViewModel @Inject constructor(private val taskRepository: TaskRep
     }
 
     private fun countUndone() {
-        undoneTasksQty.postValue(_undoneList.size)
+        undoneTasksNum.postValue(_undoneList.size)
     }
 
     private fun countDone() {
@@ -48,6 +53,6 @@ class DashboardViewModel @Inject constructor(private val taskRepository: TaskRep
             if (item.frequency != "once")
                 counter += item.doneCounter
 
-        doneTasksQty.postValue(counter)
+        doneTasksNum.postValue(counter)
     }
 }
