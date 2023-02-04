@@ -1,15 +1,31 @@
 package com.lsm.todo_app.ui.home
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.lsm.todo_app.R
 import com.lsm.todo_app.databinding.FragmentHomeBinding
+import com.lsm.todo_app.ui.BaseFragment
+import com.lsm.todo_app.ui.add_task.BroadcastAlarm
+import com.lsm.todo_app.ui.notifyObserver
+import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
 
-class HomeFragment : Fragment() {
+@AndroidEntryPoint
+class HomeFragment : BaseFragment<HomeViewModel>(HomeViewModel::class.java),
+    AdapterView.OnItemSelectedListener {
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -17,26 +33,172 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private var dayString: String = "Select date"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        val categorySpinner: Spinner = root.findViewById(R.id.categorySpinner)
+        categorySpinner.onItemSelectedListener = this
+        categorySpinner.setGravity(Gravity.RIGHT)
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.categoriesAll,
+            R.layout.spinner_no_text_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            categorySpinner.adapter = adapter
+            categorySpinner.setSelection(0)
         }
+
+        val sortingSpinner: Spinner = root.findViewById(R.id.sortingSpinner)
+        sortingSpinner.onItemSelectedListener = this
+        sortingSpinner.setGravity(Gravity.RIGHT)
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.sorting_types,
+            R.layout.spinner_no_text_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            sortingSpinner.adapter = adapter
+            sortingSpinner.setSelection(4)
+        }
+        val textDay = binding.root.findViewById<View>(R.id.textViewDay) as TextView
+        textDay.setText(dayString)
+
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = this.viewModel
+        binding.lifecycleOwner = this
+
+        observeShowDatePickerRequest()
+        observeTaskDescriptionRequest()
+        observeCancelAlarmRequest()
+
+        var adapter = TaskListAdapter(this.viewModel)
+        binding.viewModel = this.viewModel
+        binding.lifecycleOwner = this.viewLifecycleOwner
+        binding.recycleView.adapter = adapter
+
+        binding.viewModel?.taskList?.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+            adapter.notifyDataSetChanged()
+            changeDateName()
+        }
+
+        val toolbar = binding.root.findViewById<View>(R.id.toolbar) as Toolbar
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+        (activity as AppCompatActivity?)!!.supportActionBar?.setDisplayShowHomeEnabled(false)
+        (activity as AppCompatActivity?)!!.supportActionBar?.setTitle("")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun observeShowDatePickerRequest() {
+        viewModel.showDatePickerRequest.observe(this.viewLifecycleOwner) {
+            showDatePicker()
+        }
+    }
+
+    private fun observeTaskDescriptionRequest() {
+        viewModel.showTaskDescriptionRequest.observe(this.viewLifecycleOwner) {
+            viewModel.showTaskDescriptionRequest.value?.let { id -> showTaskDescriptionDialog(id) }
+        }
+    }
+
+    private fun observeCancelAlarmRequest() {
+        viewModel.cancelAlarmRequest.observe(this.viewLifecycleOwner) {
+            val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+            val intent = Intent(context, BroadcastAlarm::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(context, it.toInt(), intent, 0)
+
+            alarmManager?.cancel(pendingIntent)
+        }
+    }
+
+    private fun showTaskDescriptionDialog(id: Long) {
+
+        viewModel.fetchTask(id)
+        viewModel.task.value?.let {
+            val minute: String = if (it.minute < 10)
+                "0" + it.minute.toString()
+            else
+                it.minute.toString()
+            val items = arrayOf(
+                "Title: ${it.title}",
+                "Priority: ${it.priority}",
+                "Category: ${it.category}",
+                "Hour: ${it.hour}:${minute}",
+                "Frequency: ${it.frequency}"
+            )
+            context?.let {
+                MaterialAlertDialogBuilder(it)
+                    .setTitle("Task description")
+                    .setItems(items) { dialog, which -> }
+                    .show()
+            }
+        }
+    }
+
+    private fun showDatePicker() {
+        val title = resources.getString(R.string.select_date_hint)
+        val datePicker = MaterialDatePicker.Builder.datePicker().setTitleText(title).build()
+        datePicker.addOnPositiveButtonClickListener { value ->
+            viewModel.choice.value?.let { choice ->
+                choice.date = Date(value)
+                viewModel.choice.notifyObserver()
+                viewModel.applyChoice()
+
+                changeDateName()
+            }
+        }
+
+        datePicker.show(this.parentFragmentManager, "DATE_PICKER_TAG")
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+        viewModel.choice.value?.let { choice ->
+            val spinner: Spinner = parent as Spinner
+
+            when (spinner.id) {
+                R.id.sortingSpinner -> choice.sortingType = parent.getItemAtPosition(pos).toString()
+                R.id.categorySpinner -> choice.category = parent.getItemAtPosition(pos).toString()
+            }
+            viewModel.choice.notifyObserver()
+            viewModel.applyChoice()
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {}
+
+    private fun changeDateName() {
+
+        val textDay = binding.root.findViewById<View>(R.id.textViewDay) as TextView
+        var tomorrow = Date()
+        val cal = Calendar.getInstance()
+        cal.time = tomorrow
+        cal.add(Calendar.DATE, 1)
+        tomorrow = cal.time
+        var format = SimpleDateFormat("dd/MM/yyyy")
+        when (format.format(viewModel.choice.value?.date)) {
+            format.format(Calendar.getInstance().getTime()) -> dayString = "Today"
+            format.format(tomorrow) -> dayString = "Tomorrow"
+            else -> {
+                format = SimpleDateFormat("EEEE, MMMM d")
+                dayString = format.format(viewModel.choice.value?.date).toString()
+            }
+        }
+        textDay.setText(dayString)
     }
 }

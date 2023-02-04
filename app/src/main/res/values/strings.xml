@@ -1,6 +1,58 @@
 <resources>
     <string name="app_name">TODO_app</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_stats">Stats</string>
+    <string name="title_add_task">Add task</string>
+    <string name="taskTitleInputHint">Enter task\'s title</string>
+    <string name="addButtonText">Add</string>
+    <string name="choosePriorityText">Choose priority:</string>
+    <string name="chooseCategoryText">Choose category:</string>
+    <string name="add_task_button_description">Add task button</string>
+    <string name="chooseNotificationText">Notification:</string>
+    <string name="radio_button_once_text">Once</string>
+    <string name="repeatable_switch_text">Repeatable</string>
+    <string name="select_date_hint">Select date</string>
+    <string name="select_time_hint">Select time</string>
+    <string name="radio_button_daily_text">Daily</string>
+    <string name="radio_button_weekly_text">Weekly</string>
+    <string name="radio_button_monthly_text">Monthly</string>
+    <string name="radio_button_yearly_text">Yearly</string>
+    <string name="choose_frequency_text">Frequency:</string>
+    <string name="text_day_name">Today</string>
+    <string name="statisticsText">Statistics</string>
+    <string name="customizationButtonText">Customization</string>
+    <string-array name="priorities">
+        <item>High</item>
+        <item>Medium</item>
+        <item>Low</item>
+    </string-array>
+    <string-array name="categories">
+        <item>Work</item>
+        <item>Learning</item>
+        <item>Housework</item>
+        <item>Hobby</item>
+        <item>Family</item>
+        <item>Social</item>
+        <item>Shopping</item>
+        <item>Medical exam</item>
+    </string-array>
+    <string-array name="categoriesAll">
+        <item>All</item>
+        <item>Work</item>
+        <item>Learning</item>
+        <item>Housework</item>
+        <item>Hobby</item>
+        <item>Family</item>
+        <item>Social</item>
+        <item>Shopping</item>
+        <item>Medical exam</item>
+    </string-array>
+    <string-array name="sorting_types">
+        <item>Priority: High to Low</item>
+        <item>Priority: Low to High</item>
+        <item>A to Z</item>
+        <item>Z to A</item>
+        <item>Chronological</item>
+        <item>Reverse chronological</item>
+    </string-array>
 </resources>

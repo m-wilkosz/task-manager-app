@@ -3,7 +3,8 @@
     package="com.lsm.todo_app">
 
     <application
-        android:allowBackup="true"
+        android:name=".data.core.AppApplication"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -11,6 +12,7 @@
         android:theme="@style/Theme.TODO_app">
         <activity
             android:name=".MainActivity"
+            android:theme="@style/Theme.TODO_app.NoActionBar"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -19,6 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:name=".ui.add_task.BroadcastAlarm"/>
+        <receiver android:name=".ui.add_task.BootReceiver"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
     </application>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
 </manifest>

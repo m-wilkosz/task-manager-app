@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/input_box_stroke</item>
+    </style>
+    <style name="Theme.TODO_app.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="TaskCard" parent="">
+        <item name="cardCornerRadius">@dimen/medium_corner_size</item>
+    </style>
+    <dimen name="medium_corner_size">15dp</dimen>
+</resources>

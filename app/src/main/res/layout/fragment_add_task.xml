@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.lsm.todo_app.ui.add_task.AddTaskViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.add_task.AddTaskFragment"
+        android:background="@drawable/bg_red">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textFieldTitle"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/taskTitleInputHint"
+            app:startIconDrawable="@drawable/ic_baseline_title_input_field_24"
+            app:startIconTint="@color/red3"
+            app:boxStrokeColor="@color/red3"
+            app:boxStrokeWidth="@dimen/inputBoxStrokeWidth"
+            android:textColorHint="@color/red3"
+            app:hintTextColor="@color/red3"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.task.title}"
+                android:textColor="@color/red3"
+                android:textStyle="bold" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textViewPriority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choosePriorityText"
+            android:textSize="@dimen/textSize_h1"
+            android:textColor="@color/red3"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_big"
+            app:layout_constraintTop_toBottomOf="@id/textFieldTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:drawableLeftCompat="@drawable/ic_baseline_priority_high_24"
+            android:drawablePadding="@dimen/margin_small" />
+
+        <Spinner
+            android:id="@+id/prioritySpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:spinnerMode="dropdown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textFieldTitle"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <TextView
+            android:id="@+id/textViewCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chooseCategoryText"
+            android:textSize="@dimen/textSize_h1"
+            android:textColor="@color/red3"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_big"
+            app:layout_constraintTop_toBottomOf="@id/textViewPriority"
+            app:layout_constraintStart_toStartOf="parent"
+            app:drawableLeftCompat="@drawable/ic_baseline_category_24"
+            android:drawablePadding="@dimen/margin_small" />
+
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:spinnerMode="dropdown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/prioritySpinner"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <TextView
+            android:id="@+id/textViewNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chooseNotificationText"
+            android:textSize="@dimen/textSize_h1"
+            android:textColor="@color/red3"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginStart="@dimen/margin_big"
+            app:layout_constraintTop_toTopOf="@id/textViewCategory"
+            app:layout_constraintStart_toStartOf="parent"
+            app:drawableLeftCompat="@drawable/ic_baseline_notifications_24"
+            android:drawablePadding="@dimen/margin_small" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedTextFieldDate"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/select_date_hint"
+            app:startIconTint="@color/red3"
+            app:boxStrokeColor="@color/red3"
+            app:boxStrokeWidth="@dimen/inputBoxStrokeWidth"
+            android:textColorHint="@color/red3"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_big"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNotification"
+            app:startIconDrawable="@drawable/ic_baseline_calendar_month_24_red">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/outlinedTextFieldDateText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.showDatePicker()}"
+                android:drawablePadding="@dimen/margin_small_minus"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/select_date_hint"
+                android:textColor="@color/red3"
+                android:textSize="@dimen/textSize_h1"
+                android:textStyle="bold" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedTextFieldTime"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/select_time_hint"
+            app:startIconTint="@color/red3"
+            app:boxStrokeColor="@color/red3"
+            app:boxStrokeWidth="@dimen/inputBoxStrokeWidth"
+            android:textColorHint="@color/red3"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            app:layout_constraintStart_toEndOf="@id/outlinedTextFieldDate"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNotification"
+            app:startIconDrawable="@drawable/ic_baseline_time_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/outlinedTextFieldTimeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.showTimePicker()}"
+                android:drawablePadding="@dimen/margin_small_minus"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/select_time_hint"
+                android:textColor="@color/red3"
+                android:textSize="@dimen/textSize_h1"
+                android:textStyle="bold" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textViewFrequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_frequency_text"
+            android:textSize="@dimen/textSize_h1"
+            android:textColor="@color/red3"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginStart="@dimen/margin_big"
+            app:layout_constraintTop_toBottomOf="@id/outlinedTextFieldDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:drawableLeftCompat="@drawable/ic_baseline_loop_24"
+            android:drawablePadding="@dimen/margin_small" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupFrequency"
+            android:checkedButton="@+id/radio_button_once"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/outlinedTextFieldDate"
+            app:layout_constraintStart_toStartOf="@id/outlinedTextFieldDate"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_veryBig">
+
+            <RadioButton
+                android:id="@+id/radio_button_once"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/radio_button_once_text"
+                android:textColor="@color/red3"
+                android:textSize="@dimen/textSize_h1"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/radio_button_daily"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/radio_button_daily_text"
+                android:textColor="@color/red3"
+                android:textSize="@dimen/textSize_h1"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/radio_button_weekly"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/radio_button_weekly_text"
+                android:textColor="@color/red3"
+                android:textSize="@dimen/textSize_h1"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/radio_button_monthly"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/radio_button_monthly_text"
+                android:textColor="@color/red3"
+                android:textSize="@dimen/textSize_h1"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/radio_button_yearly"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/radio_button_yearly_text"
+                android:textColor="@color/red3"
+                android:textSize="@dimen/textSize_h1"
+                android:textStyle="bold" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:backgroundTint="@color/red3"
+            android:text="@string/addButtonText"
+            android:onClick="@{() -> viewModel.saveAddTask()}"
+            app:layout_constraintTop_toBottomOf="@id/radioGroupFrequency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="@dimen/margin_medium">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.lsm.todo_app.ui.home.HomeViewModel" />
+        <variable
+            name="item"
+            type="com.lsm.todo_app.data.Task" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:weightSum="11">
+
+        <ImageView
+            android:id="@+id/imageViewPriority"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_baseline_circle_24_red" />
+
+        <Button
+            android:id="@+id/buttonTitle"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/taskTitleButtonHeight"
+            android:layout_weight="7"
+            android:backgroundTint="@color/white"
+            android:layout_marginStart="@dimen/margin_small"
+            android:textColor="@color/gray"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="@{item.title, default=title}"
+            android:textAllCaps="false"
+            android:onClick="@{() -> viewModel.showTaskDescription(item.id)}"/>
+
+        <ImageButton
+            android:id="@+id/imageViewDone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="2"
+            android:layout_marginStart="@dimen/margin_small"
+            app:srcCompat="@drawable/ic_baseline_check_circle_outline_24"
+            android:background="@color/white"
+            android:onClick="@{() -> viewModel.setTaskDone(item.id)}"/>
+
+        <ImageButton
+            android:id="@+id/imageViewDelete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/margin_small"
+            app:srcCompat="@drawable/ic_baseline_delete_24"
+            android:background="@color/white"
+            android:onClick="@{() -> viewModel.deleteTask(item.id)}"/>
+
+    </LinearLayout>
+</layout>
