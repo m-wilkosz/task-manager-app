@@ -1,5 +1,5 @@
 # Task Manager App
-[![](https://skills.thijs.gg/icons?i=kotlin,androidstudio,gradle)](https://skills.thijs.gg)
+[![](https://skillicons.dev/icons?i=kotlin,androidstudio,gradle)](https://skillicons.dev)
 
 ### Description
 This is Android Studio project, written in Kotlin, made for mobile systems laboratory course.
